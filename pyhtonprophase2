@@ -1,0 +1,51 @@
+import tkinter as tk
+from tkinter import simpledialog
+
+user_profiles = {}# this is dictionary to store user profiles
+
+def add_new_profile():
+    websites = simpledialog.askstring("add a new website", "what is the name of the website?", parent=main_window)
+    if not websites:  # exit the function  for error
+        return
+
+   
+    username = simpledialog.askstring("add a username", "what is your username for this website?", parent=main_window)#asks for the username
+    if not username:
+        return 
+
+
+    password = simpledialog.askstring("add a password", "what is your password for this website?", parent=main_window)  #asks for the password
+    if not password:
+        return 
+
+ 
+    user_profiles[websites] = {'user': username, 'pass': password}   # Stores the website username and password in user_profiles
+
+def view_all_profiles():# we use a string that compiles all stored profiles
+    profile_details = ""
+    for website, info in user_profiles.items():
+        profile_details += f"website: {website}\nusername: {info['user']}\npassword: {info['pass']}\n---\n"
+    
+    
+    profiles_display.config(state=tk.NORMAL)   # displays for the profiles in the profiles_display
+    profiles_display.delete('1.0', tk.END)
+    profiles_display.insert(tk.END, profile_details)
+    profiles_display.config(state=tk.DISABLED)
+
+main_window = tk.Tk()# themain application window
+main_window.title("my password manager")
+
+button_add = tk.Button(main_window, text="add a new website", command=add_new_profile)
+# the button for new profiles
+button_add.pack()
+
+button_show = tk.Button(main_window, text="view all of the info ", command=view_all_profiles)#the button to display all stored profiles
+button_show.pack()
+
+
+profiles_display = tk.Text(main_window, height=30, width=30)#text widget to display the profiles
+profiles_display.pack()
+profiles_display.config(state=tk.DISABLED)
+
+
+main_window.mainloop()# start the tkinter event loop
